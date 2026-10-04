@@ -1,0 +1,2 @@
+# Preserve bundled runtime notices exactly as provided by the runtime packages.
+Windows/ThirdParty/*.txt -text whitespace=-blank-at-eof,cr-at-eol

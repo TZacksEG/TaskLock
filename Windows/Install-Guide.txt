@@ -1,0 +1,65 @@
+TaskLock 1.1.0-beta.1 — Windows experimental beta
+Arabic interface · local tasks · no account · no cloud sync
+
+العربية
+هذه أول نسخة ويندوز تجريبية. تم بناء x64 وARM64 واختبار منطق المهام على الماك؛
+لم تُجرَّب الواجهة أو فلترة الإدخال على جهاز ويندوز فعلي بعد.
+ابدأ التجربة على Windows 11 مدعوم. توافق كل إصدارات Windows 10 غير مضمون.
+اختر x64 لمعظم أجهزة Intel/AMD، أو ARM64 لويندوز على معالج ARM.
+كل نسخة تضم .NET اللازم للتشغيل؛ لا تحتاج لتثبيته منفصلًا.
+
+1. فك ZIP كاملًا في مجلد عادي. شغّل Install.cmd لتثبيت التطبيق في حسابك،
+   أو TaskLock.exe مباشرة لتجربة محمولة. لا يحتاج صلاحيات Administrator.
+2. جرّب «معاينة ١٥ ثانية» أولًا. تنتهي تلقائيًا، والمهام فيها أمثلة فقط.
+3. أضف مهامك في السطر الأخير من الجدول. حدد المهمة ثم زر الحذف لإزالتها.
+4. حدد وقت بداية اليوم، ثم «حفظ وتفعيل القفل». ستظهر المهام على الشاشات المتصلة.
+5. ضع علامة على المهام بعد إنجازها. بعد إكمال الجميع يختفي الحاجز.
+6. للتشغيل التلقائي، فعّل الخيار داخل الإعدادات بعد التثبيت.
+   يبدأ التطبيق بعد تسجيل الدخول إلى ويندوز، ولا يسبق شاشة كلمة المرور.
+
+«حفظ مسودة وتثبيت» داخل النسخة المحمولة يحفظ ما كتبته كروتين غير مفعّل،
+ويفتحه في النسخة المثبتة. راجع القائمة واضغط حفظ وتفعيل بعد التثبيت.
+التقدم محفوظ بين التشغيلات. يوم جديد يعيد المهام حسب الوقت الذي اخترته.
+الإعدادات والخروج متاحان من أيقونة TaskLock بجوار الساعة بعد إكمال المهام.
+ابدأ بمهام قليلة سهلة، وافحص المعاينة والنقر والتمرير والشاشات قبل استخدامه يوميًا.
+
+النسخة غير موقعة بشهادة ناشر، وقد يظهر تحذير SmartScreen أو منع على جهاز مُدار.
+لا تعطّل وسائل حماية ويندوز لتشغيلها. لا تعتبر هذه النسخة إصدارًا نهائيًا مختبرًا.
+TaskLock حاجز تركيز شخصي، وليس بديلًا عن قفل ويندوز أو حاجزًا أمنيًا محكمًا.
+Ctrl+Alt+Delete وشاشات تسجيل الدخول وUAC تظل تحت سيطرة ويندوز.
+لو حدث عطل، يمكنك استخدام خيارات ويندوز المعتادة لإغلاق التطبيق.
+
+مكان التثبيت: %LOCALAPPDATA%\Programs\TaskLock\TaskLock.exe
+بياناتك: %LOCALAPPDATA%\TaskLock\routine.json
+للحذف: أكمل المهام، أغلق التطبيق من أيقونته، ثم شغّل Uninstall.cmd.
+الحذف يزيل التشغيل التلقائي والبرنامج والاختصار فقط؛ يترك ملف مهامك محفوظًا.
+
+English
+Experimental Windows beta. Cross-compiled x64/ARM64 executables and portable
+logic tests passed on macOS. Native Windows UI, input hooks, login, sleep/wake,
+installation, and display behavior HAVE NOT been tested on a Windows machine.
+Use a supported Windows 11 release for initial testing. Not every Windows 10
+edition is supported by the bundled runtime. Choose x64 for Intel/AMD PCs or ARM64 for Windows on ARM. .NET is bundled.
+
+Unzip fully. Run Install.cmd for a per-user install, or TaskLock.exe for portable
+use. No administrator rights are required. Try the bounded 15-second preview
+first, add tasks, choose a daily reset time, then save and enable. The interface
+is Arabic. The tray icon opens settings or exits after the checklist is complete.
+Launch at login is opt-in after installation; it runs after Windows sign-in.
+Installing from the portable editor saves a disabled draft before relaunching.
+Review it and explicitly enable the routine in the installed app.
+
+Unsigned publisher beta: SmartScreen or managed-device policies may block it.
+Do not disable Windows protection. This is a personal focus aid, not an
+unbreakable security boundary. Windows secure desktop, Ctrl+Alt+Delete,
+authentication, and UAC remain under OS control. Normal Windows recovery tools
+remain available. Data is local, with no telemetry, accounts, or cloud sync.
+
+Install: %LOCALAPPDATA%\Programs\TaskLock\TaskLock.exe
+Data: %LOCALAPPDATA%\TaskLock\routine.json
+Uninstall: finish tasks, quit the tray app, then run Uninstall.cmd. Your task
+file is preserved. This per-user installer creates a Start menu shortcut; it
+does not register an enterprise service or an Apps & Features uninstall entry.
+
+Before wider sharing, complete the Windows runtime checklist in the source
+project's docs/Windows-testing.md. A successful cross-build is not that test.
