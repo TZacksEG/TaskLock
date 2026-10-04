@@ -6,7 +6,7 @@ TaskLock is a native Mac and Windows app that places your daily checklist in the
 
 **No accounts, backend, analytics, or cloud sync. Your routine stays on your device.**
 
-[العربية](README.md) · [Downloads](https://github.com/TZacksEG/TaskLock/releases) · [Report an issue](https://github.com/TZacksEG/TaskLock/issues) · [Validation report](docs/Release-status.md)
+[Repository downloads](download/) · [العربية](README.md) · [GitHub Releases](https://github.com/TZacksEG/TaskLock/releases) · [Report an issue](https://github.com/TZacksEG/TaskLock/issues) · [Validation report](docs/Release-status.md)
 
 ![Actual TaskLock macOS preview with sample tasks](docs/images/macos-preview.png)
 
@@ -46,9 +46,9 @@ Open the [1.1.0-beta.1 release](https://github.com/TZacksEG/TaskLock/releases/ta
 
 | Platform | Download | Status |
 |---|---|---|
-| Apple Silicon or Intel Mac, macOS 14+ | `TaskLock-1.1.0-beta.1-macOS-universal-unnotarized-beta.dmg` | Universal binary; ad-hoc signed, not notarized |
-| Intel/AMD Windows PC, 64-bit | `TaskLock-1.1.0-beta.1-Windows-x64-experimental-beta.zip` | Experimental cross-build; native runtime untested |
-| Windows on ARM64 | `TaskLock-1.1.0-beta.1-Windows-arm64-experimental-beta.zip` | Experimental ARM64 build; native runtime untested |
+| Apple Silicon or Intel Mac, macOS 14+ | [Download the Mac build](download/Mac/) | Universal binary; ad-hoc signed, not notarized |
+| Intel/AMD Windows PC, 64-bit | [Download Windows x64](download/Windows/TaskLock-1.1.0-beta.1-Windows-x64-experimental-beta.zip) | Experimental cross-build; native runtime untested |
+| Windows on ARM64 | [Download Windows ARM64](download/Windows/TaskLock-1.1.0-beta.1-Windows-arm64-experimental-beta.zip) | Experimental ARM64 build; native runtime untested |
 
 Windows packages include their .NET runtime; users do not need a separate .NET installation. Use a supported Windows 11 edition for initial testing. The source API target does not guarantee compatibility with every Windows 10 edition. See [Microsoft's supported Windows versions](https://learn.microsoft.com/en-us/dotnet/core/install/windows).
 
