@@ -1,0 +1,3 @@
+fd8087632d9df993997e666fbb4cce98299eb7cd9eb86ba3b8e48a5b7a513bf9  Mac/TaskLock-1.1.0-beta.1-macOS-universal-unnotarized-beta.dmg
+be0b7011b4c745af4ee338ce6c4e97fe638d2fe1b5df2fff208fd9f3560c998b  Windows/TaskLock-1.1.0-beta.1-Windows-arm64-experimental-beta.zip
+09a479ea712adff43adb1ccf4a35a6cecf1a321b0d8dea7e8ea05b84984fa084  Windows/TaskLock-1.1.0-beta.1-Windows-x64-experimental-beta.zip

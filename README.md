@@ -6,7 +6,7 @@
 
 **بدون حسابات، بدون سيرفر، وبدون مزامنة سحابية. بيانات الروتين محفوظة على جهازك.**
 
-[English documentation](README.en.md) · [تحميل الإصدارات](https://github.com/TZacksEG/TaskLock/releases) · [الإبلاغ عن مشكلة](https://github.com/TZacksEG/TaskLock/issues) · [حالة الاختبارات](docs/Release-status.md)
+[تحميل مباشر من فولدر Download](download/) · [English documentation](README.en.md) · [صفحة الإصدارات](https://github.com/TZacksEG/TaskLock/releases) · [الإبلاغ عن مشكلة](https://github.com/TZacksEG/TaskLock/issues) · [حالة الاختبارات](docs/Release-status.md)
 
 ![معاينة فعلية لواجهة TaskLock على macOS، بمهام تجريبية](docs/images/macos-preview.png)
 
@@ -46,9 +46,9 @@ TaskLock يساعدك تلتزم بروتينك قبل الانشغال بالك
 
 | جهازك | الملف | حالة النسخة |
 |---|---|---|
-| Mac بمعالج Apple Silicon أو Intel، macOS 14 فأحدث | `TaskLock-1.1.0-beta.1-macOS-universal-unnotarized-beta.dmg` | حزمة Universal؛ توقيع محلي ad-hoc، بدون توثيق Apple |
-| Windows بمعالج Intel أو AMD ‏64-bit | `TaskLock-1.1.0-beta.1-Windows-x64-experimental-beta.zip` | بناء تجريبي؛ التشغيل الفعلي على ويندوز غير مختبر |
-| Windows على معالج ARM64 | `TaskLock-1.1.0-beta.1-Windows-arm64-experimental-beta.zip` | بناء ARM64 تجريبي؛ التشغيل الفعلي غير مختبر |
+| Mac بمعالج Apple Silicon أو Intel، macOS 14 فأحدث | [تحميل نسخة Mac](download/Mac/) | حزمة Universal؛ توقيع محلي ad-hoc، بدون توثيق Apple |
+| Windows بمعالج Intel أو AMD ‏64-bit | [تحميل Windows x64](download/Windows/TaskLock-1.1.0-beta.1-Windows-x64-experimental-beta.zip) | بناء تجريبي؛ التشغيل الفعلي على ويندوز غير مختبر |
+| Windows على معالج ARM64 | [تحميل Windows ARM64](download/Windows/TaskLock-1.1.0-beta.1-Windows-arm64-experimental-beta.zip) | بناء ARM64 تجريبي؛ التشغيل الفعلي غير مختبر |
 
 نسختا ويندوز تضمان ملفات .NET اللازمة للتشغيل؛ لا تحتاج تثبيت .NET منفصلًا. ابدأ التجربة على إصدار Windows 11 مدعوم. استهداف واجهات Windows 10 في الكود لا يعني ضمان التوافق مع كل إصدارات Windows 10؛ راجع [أنظمة ويندوز المدعومة من .NET](https://learn.microsoft.com/en-us/dotnet/core/install/windows).
 
