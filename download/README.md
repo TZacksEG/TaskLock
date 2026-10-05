@@ -5,7 +5,7 @@
 - [نسخة Mac](Mac/)
 - [نسخ Windows](Windows/)
 
-لو مش متأكد تختار إيه، اقرأ ملف الشرح جوه فولدر النظام بتاعك. تقدر كمان تنزّل نفس الملفات من [صفحة الإصدارات](https://github.com/TZacksEG/TaskLock/releases/tag/v1.1.0-beta.1).
+لو مش متأكد تختار إيه، اقرأ ملف الشرح جوه فولدر النظام بتاعك. نسخة الماك الحالية في [1.1.1-beta.1](https://github.com/TZacksEG/TaskLock/releases/tag/v1.1.1-beta.1)، ونسخ ويندوز في [1.1.0-beta.1](https://github.com/TZacksEG/TaskLock/releases/tag/v1.1.0-beta.1).
 
 ملف `SHA256SUMS.txt` فيه بصمة كل نسخة عشان تتأكد إن الملف اتنقل كامل من غير تلف. البصمة بتثبت سلامة الملف، لكنها مش توقيع ناشر.
 

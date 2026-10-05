@@ -3,9 +3,9 @@
 set -euo pipefail
 
 TASKLOCK_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-TASKLOCK_RELEASE="1.1.0-beta.1"
-TASKLOCK_VERSION="1.1.0"
-TASKLOCK_BUILD="2"
+TASKLOCK_RELEASE="1.1.1-beta.1"
+TASKLOCK_VERSION="1.1.1"
+TASKLOCK_BUILD="3"
 TASKLOCK_ID="app.tasklock.desktop"
 TASKLOCK_NOTARIZE=0
 case "${1:-}" in
@@ -41,9 +41,15 @@ TASKLOCK_BASE="TaskLock-$TASKLOCK_RELEASE-macOS-universal-$TASKLOCK_MODE"
 TASKLOCK_APP="$TASKLOCK_OUT/TaskLock.app"
 TASKLOCK_MOUNT="$TASKLOCK_STAGE/verify-mount"
 TASKLOCK_MOUNTED=0
+TASKLOCK_BUILD_SUCCEEDED=0
 cleanup() {
   if [[ "$TASKLOCK_MOUNTED" == 1 ]]; then
     hdiutil detach "$TASKLOCK_MOUNT" >/dev/null || hdiutil detach -force "$TASKLOCK_MOUNT" >/dev/null
+  fi
+  if [[ "$TASKLOCK_BUILD_SUCCEEDED" == 1 && -d "$TASKLOCK_STAGE" ]]; then
+    # Successful builds publish archives and reports only. Removing the exact
+    # task-owned stage prevents Spotlight/LaunchServices finding extra app copies.
+    /bin/rm -rf -- "$TASKLOCK_STAGE"
   fi
 }
 trap cleanup EXIT
@@ -82,6 +88,7 @@ cat > "$TASKLOCK_APP/Contents/Info.plist" <<PLIST
 <key>TaskLockReleaseVersion</key><string>$TASKLOCK_RELEASE</string>
 <key>TaskLockDistributionChannel</key><string>$TASKLOCK_MODE</string>
 <key>LSMinimumSystemVersion</key><string>14.0</string>
+<key>LSUIElement</key><true/>
 <key>NSPrincipalClass</key><string>NSApplication</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>LSMultipleInstancesProhibited</key><true/>
@@ -134,6 +141,7 @@ Channel: $TASKLOCK_MODE
 3. من System Settings > Privacy & Security > Accessibility فعّل TaskLock.
 4. جرّب «معاينة ١٥ ثانية» أولًا، ثم أضف مهامك ووقت التجديد واضغط حفظ وتفعيل.
 5. التشغيل عند تسجيل الدخول اختياري من «تشغيل تلقائي مع دخول الماك».
+6. بعد إغلاق نافذة الإعدادات يظل TaskLock شغالًا من أيقونة الدرع في شريط القوائم، من غير أيقونة في Dock.
 الشاشة تُفتح بعد تحديد كل المهام كمكتملة. البداية فارغة وغير مفعلة.
 لا يحل التطبيق محل قفل macOS أو كلمة المرور، وليس حاجزًا أمنيًا يستحيل تجاوزه.
 إيقاف الاستخدام: بعد إكمال المهام، عطّل الروتين والتشغيل التلقائي ثم أغلق التطبيق.
@@ -146,6 +154,7 @@ Beta software. The current interface is Arabic. Tasks remain on your own Mac.
 3. Enable TaskLock in System Settings > Privacy & Security > Accessibility.
 4. Try the 15-second preview first. Add your tasks/reset time, then save and enable.
 5. Launch at login is optional; enable it with the app's login toggle if wanted.
+6. Closing the settings window keeps TaskLock running from its shield menu-bar icon, without a Dock icon.
 The screen unlocks after you check every task. A fresh install starts empty and disabled.
 TaskLock does not replace macOS authentication and is not an unbreakable security boundary.
 To stop using it, finish the checklist, disable the routine and login toggle, then quit.
@@ -257,6 +266,9 @@ if [[ "$TASKLOCK_NOTARIZE" == 1 && "$TASKLOCK_GATEKEEPER_STATUS" != 0 ]]; then
 fi
 shasum -a 256 "$TASKLOCK_BASE.zip" "$TASKLOCK_BASE.dmg" Install-Guide.txt BUILD-VERIFICATION.txt > SHA256SUMS.txt
 shasum -a 256 -c SHA256SUMS.txt
+# The installable app remains inside the verified ZIP and DMG. Do not publish a
+# loose .app that LaunchServices can index as another runnable copy.
+/bin/rm -rf -- "$TASKLOCK_OUT/TaskLock.app"
 # A failed build or notarization never replaces the previously verified release.
 mkdir -p "$(dirname "$TASKLOCK_PUBLISH")"
 if [[ -d "$TASKLOCK_PUBLISH" ]]; then
@@ -268,4 +280,5 @@ if ! mv "$TASKLOCK_OUT" "$TASKLOCK_PUBLISH"; then
   fi
   exit 1
 fi
+TASKLOCK_BUILD_SUCCEEDED=1
 printf '\nCreated: %s\nGatekeeper exit code: %s (see BUILD-VERIFICATION.txt)\n' "$TASKLOCK_PUBLISH" "$TASKLOCK_GATEKEEPER_STATUS"

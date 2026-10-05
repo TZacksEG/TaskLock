@@ -1,6 +1,6 @@
-# Release validation — 1.1.0-beta.1
+# Release validation — Mac 1.1.1-beta.1 / Windows 1.1.0-beta.1
 
-Validation date: 2026-10-04. This is a pre-release with explicit platform-testing gaps.
+Validation date: 2026-10-05. These are pre-releases with explicit platform-testing gaps.
 
 | Scope | Evidence | Result |
 |---|---|---|
@@ -8,6 +8,7 @@ Validation date: 2026-10-04. This is a pre-release with explicit platform-testin
 | Windows portable core | 33 .NET console tests on macOS; routine cycles, editing, installation drafts, persistence failures and pointer rules | PASS |
 | Mac build | Universal arm64+x86_64; deployment target macOS 14 on both slices | PASS |
 | Mac package integrity | Strict ad-hoc codesign, ZIP extraction, read-only DMG mount comparison, SHA-256 readback | PASS |
+| Mac menu-bar lifecycle | Accessory activation policy, `LSUIElement`, status-item presence, settings close without process exit, and settings reopen from menu | PASS |
 | Apple trust | No Developer ID identity; no notarization submission; local Gatekeeper returned exit 3, rejected | NOT APPROVED |
 | Mac original UI | Bounded native preview and completion/storage-failure paths on one Apple Silicon machine | OBSERVED IN DEVELOPMENT |
 | Full Mac input filtering | Accessibility was not granted during the previous development UI test | NOT VERIFIED |
@@ -30,6 +31,7 @@ The 51 automated tests validate the routine and persistence logic and the tested
 - Hook heartbeat is documented as thread liveness, not proof of continued OS hook registration.
 - Runtime license notices are embedded and included in Windows packages.
 - Public Mac data and app identity are isolated from the original development build. Launch at login is opt-in for recipients.
+- The Mac app runs as a menu-bar agent with no Dock icon. Successful packaging removes loose staged app copies after producing the ZIP and DMG.
 
 ## Required device testing
 

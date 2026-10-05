@@ -12,7 +12,7 @@ TaskLock is a native Mac and Windows app that places your daily checklist in the
 
 *The image shows the Mac app with sample tasks. It is not a Windows screenshot or evidence of input filtering on every device.*
 
-> **Current version: 1.1.0-beta.1 — pre-release.** The Mac package is not Apple notarized. Windows packages are unsigned, experimentally cross-built, and have not been run on a physical Windows machine. Review the validation section before relying on the barrier.
+> **Current versions: Mac 1.1.1-beta.1 and Windows 1.1.0-beta.1 — pre-release.** The Mac package is not Apple notarized. Windows packages are unsigned, experimentally cross-built, and have not been run on a physical Windows machine. Review the validation section before relying on the barrier.
 
 ## Contents
 
@@ -42,11 +42,11 @@ Start with a short, manageable list and try the preview before enabling it. A ne
 
 ## Download and compatibility
 
-Open the [1.1.0-beta.1 release](https://github.com/TZacksEG/TaskLock/releases/tag/v1.1.0-beta.1) and choose an installer from **Assets**:
+Use the [Mac 1.1.1-beta.1 hotfix](https://github.com/TZacksEG/TaskLock/releases/tag/v1.1.1-beta.1) or the [Windows 1.1.0-beta.1 release](https://github.com/TZacksEG/TaskLock/releases/tag/v1.1.0-beta.1), then choose the matching asset:
 
 | Platform | Download | Status |
 |---|---|---|
-| Apple Silicon or Intel Mac, macOS 14+ | [Download the Mac build](download/Mac/) | Universal binary; ad-hoc signed, not notarized |
+| Apple Silicon or Intel Mac, macOS 14+ | [Download the Mac build](download/Mac/TaskLock-1.1.1-beta.1-macOS-universal-unnotarized-beta.dmg) | Universal binary; menu-bar agent with no Dock icon; ad-hoc signed, not notarized |
 | Intel/AMD Windows PC, 64-bit | [Download Windows x64](download/Windows/TaskLock-1.1.0-beta.1-Windows-x64-experimental-beta.zip) | Experimental cross-build; native runtime untested |
 | Windows on ARM64 | [Download Windows ARM64](download/Windows/TaskLock-1.1.0-beta.1-Windows-arm64-experimental-beta.zip) | Experimental ARM64 build; native runtime untested |
 
@@ -64,6 +64,7 @@ Each package includes a bilingual install guide. The release also provides `SHA2
 - **One barrier per connected display:** display changes trigger rebuilding; actual multi-display testing remains pending.
 - **15-second preview:** temporary sample tasks, automatic expiry, no modification of your real checklist.
 - **Optional launch at login:** enabled through app settings, after OS sign-in.
+- **macOS menu-bar agent:** closing the settings window leaves the routine running; the shield item reopens it without a Dock icon.
 - **Arabic interface:** settings and labels are Arabic; task titles can contain other languages.
 - **Storage recovery:** failed writes release the barrier and preserve the last successfully saved state.
 
@@ -76,6 +77,8 @@ Each package includes a bilingual install guide. The release also provides `SHA2
 5. Try **«معاينة ١٥ ثانية»** — the 15-second preview. Without Accessibility, this exercises the presentation only, not keyboard filtering.
 6. Add tasks, choose the reset time, and press **«حفظ وتفعيل الروتين»** — save and enable the routine.
 7. Optionally enable **«تشغيل تلقائي مع دخول الماك»** — launch at login. Approve it in Login Items if macOS asks.
+
+After setup, close the settings window normally with its red button. TaskLock keeps running from the shield in the menu bar. Use **Quit TaskLock** from that menu only when you intend to stop the process after completing the routine.
 
 ### If macOS blocks the first launch
 
@@ -153,7 +156,7 @@ Use ordinary OS recovery controls if the app malfunctions. During normal operati
 
 ## What has been tested
 
-| Check | 1.1.0-beta.1 evidence |
+| Check | Latest available evidence |
 |---|---|
 | Swift routine/storage logic | **18 tests passed** |
 | Portable .NET routine/storage/pointer logic | **33 tests passed on macOS** |
@@ -178,7 +181,7 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer swift test
 ./script/package_macos.sh
 ```
 
-Output: `outputs/releases/macos/1.1.0-beta.1-unnotarized-beta/`. The packaging script builds both architectures, produces a universal app, ZIP, DMG, verification report and checksums. It does not install or launch the app.
+Output: `outputs/releases/macos/1.1.1-beta.1-unnotarized-beta/`. The packaging script builds both architectures, produces a universal app, ZIP, DMG, verification report and checksums. It does not install or launch the app, and it removes temporary loose `.app` copies after a successful package run.
 
 An explicit Developer ID/notarytool path is implemented for maintainers with an appropriate identity and Keychain profile. It submits artifacts to Apple and was not exercised with a publisher account for this release. See [Mac distribution](docs/Mac-distribution.md).
 

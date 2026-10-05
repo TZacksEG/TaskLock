@@ -15,6 +15,13 @@ TASKLOCK_BINARY="$(swift build --show-bin-path)/TaskLock"
 TASKLOCK_ID="local.tamer.TaskLock"
 TASKLOCK_NAME="TaskLock"
 TASKLOCK_BUNDLE="$TASKLOCK_ROOT/outputs/TaskLock.app"
+TASKLOCK_INSTALL_STAGE=""
+if [[ "$MODE" == "--install" ]]; then
+  mkdir -p "$TASKLOCK_ROOT/work"
+  TASKLOCK_INSTALL_STAGE="$(mktemp -d "$TASKLOCK_ROOT/work/tasklock-install.XXXXXX")"
+  TASKLOCK_BUNDLE="$TASKLOCK_INSTALL_STAGE/TaskLock.app"
+  trap '[[ -z "$TASKLOCK_INSTALL_STAGE" ]] || /bin/rm -rf -- "$TASKLOCK_INSTALL_STAGE"' EXIT
+fi
 if [[ "$MODE" == "--test-build" ]]; then
   TASKLOCK_ID="local.tamer.TaskLock.test"
   TASKLOCK_NAME="TaskLock Test"
@@ -31,9 +38,10 @@ cat > "$TASKLOCK_BUNDLE/Contents/Info.plist" <<PLIST
 <key>CFBundleName</key><string>$TASKLOCK_NAME</string>
 <key>CFBundleDisplayName</key><string>$TASKLOCK_NAME</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>1.0</string>
-<key>CFBundleVersion</key><string>1</string>
+<key>CFBundleShortVersionString</key><string>1.1.1</string>
+<key>CFBundleVersion</key><string>3</string>
 <key>LSMinimumSystemVersion</key><string>14.0</string>
+<key>LSUIElement</key><true/>
 <key>NSPrincipalClass</key><string>NSApplication</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>LSMultipleInstancesProhibited</key><true/>
@@ -53,9 +61,14 @@ if [[ "$MODE" == "--build" || "$MODE" == "--test-build" ]]; then
 fi
 # Only stop this app, never shared tools or unrelated tasks.
 pkill -x TaskLock >/dev/null 2>&1 || true
-if [[ "$MODE" == "--install" || -d /Applications/TaskLock.app ]]; then
-  ditto "$TASKLOCK_BUNDLE" /Applications/TaskLock.app
-  TASKLOCK_BUNDLE=/Applications/TaskLock.app
+if [[ "$MODE" == "--install" ]]; then
+  TASKLOCK_INSTALL_TARGET="/Applications/TaskLock.app"
+  [[ "$TASKLOCK_INSTALL_TARGET" == "/Applications/TaskLock.app" ]] || exit 3
+  if [[ -e "$TASKLOCK_INSTALL_TARGET" ]]; then
+    /bin/rm -rf -- "$TASKLOCK_INSTALL_TARGET"
+  fi
+  ditto "$TASKLOCK_BUNDLE" "$TASKLOCK_INSTALL_TARGET"
+  TASKLOCK_BUNDLE="$TASKLOCK_INSTALL_TARGET"
 fi
 /usr/bin/open -n "$TASKLOCK_BUNDLE"
 case "$MODE" in

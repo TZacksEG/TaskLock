@@ -6,7 +6,9 @@ import Carbon
 let application = NSApplication.shared
 let appDelegate = AppDelegate()
 application.delegate = appDelegate
-application.setActivationPolicy(.regular)
+// TaskLock is a menu-bar agent. Closing its settings window must leave the
+// daily routine running without occupying the Dock.
+application.setActivationPolicy(.accessory)
 application.run()
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -38,6 +40,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         barrier.observeLifecycle()
         barrier.reconcile()
         if !barrier.isLocked { openSettings() }
+        if testMode && CommandLine.arguments.contains("--menu-bar-test") {
+            runMenuBarTest()
+        }
         if testMode && CommandLine.arguments.contains("--smoke-test") {
             barrier.runSmokeTest()
         }
@@ -64,6 +69,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.mainMenu = main
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         statusItem?.button?.image = NSImage(systemSymbolName: "checkmark.shield", accessibilityDescription: "TaskLock")
+        statusItem?.button?.toolTip = "TaskLock — مهام اليوم"
         statusItem?.menu = app.copy() as? NSMenu
     }
 
@@ -71,7 +77,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard barrier?.isLocked != true else { return }
         store.refreshPermissions()
         if settingsWindow == nil {
-            let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 820, height: 740), styleMask: [.titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: false)
+            let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 820, height: 740), styleMask: [.titled, .closable, .resizable], backing: .buffered, defer: false)
             window.title = "TaskLock — روتينك اليومي"
             window.minSize = NSSize(width: 720, height: 660)
             window.isReleasedWhenClosed = false
@@ -83,6 +89,35 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         settingsWindow?.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
+    }
+
+    private func runMenuBarTest() {
+        guard testMode else { return }
+        let output = store.repository.url.deletingLastPathComponent().appendingPathComponent("menu-bar-evidence.json")
+        var evidence: [String: Any] = [
+            "activationPolicyAccessory": NSApp.activationPolicy() == .accessory,
+            "infoPlistAgent": (Bundle.main.object(forInfoDictionaryKey: "LSUIElement") as? Bool) == true,
+            "menuBarItemPresent": statusItem?.button != nil,
+            "settingsOpenedAtLaunch": settingsWindow?.isVisible == true
+        ]
+        settingsWindow?.close()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            guard let self else { return }
+            evidence["settingsHiddenAfterClose"] = self.settingsWindow?.isVisible == false
+            evidence["processStillRunningAfterClose"] = NSApp.isRunning
+            evidence["menuActionWired"] = self.statusItem?.menu?.items.first?.action == #selector(self.openSettings)
+            if let menu = self.statusItem?.menu { menu.performActionForItem(at: 0) }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                evidence["settingsReopenedFromMenu"] = self.settingsWindow?.isVisible == true
+                evidence["dockExcluded"] = (evidence["activationPolicyAccessory"] as? Bool == true)
+                    && (evidence["infoPlistAgent"] as? Bool == true)
+                try? FileManager.default.createDirectory(at: output.deletingLastPathComponent(), withIntermediateDirectories: true)
+                if let data = try? JSONSerialization.data(withJSONObject: evidence, options: [.prettyPrinted, .sortedKeys]) {
+                    try? data.write(to: output, options: .atomic)
+                }
+                NSApp.terminate(nil)
+            }
+        }
     }
 
     @objc func quit() { if barrier?.isLocked != true { NSApp.terminate(nil) } }
